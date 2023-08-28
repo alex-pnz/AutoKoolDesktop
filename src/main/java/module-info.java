@@ -1,6 +1,8 @@
 module com.fullstackhub.autokool {
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.sql;
+    requires org.slf4j;
 
 
     opens com.fullstackhub.autokool to javafx.fxml;
