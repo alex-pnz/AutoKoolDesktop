@@ -43,3 +43,5 @@ build/
 /.idea/.gitignore
 /mvnw
 /mvnw.cmd
+/.idea/uiDesigner.xml
+/.idea/vcs.xml
