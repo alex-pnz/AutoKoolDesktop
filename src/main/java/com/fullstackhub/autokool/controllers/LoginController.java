@@ -25,13 +25,13 @@ public class LoginController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        buttonLogin.setDisable(true);
+        buttonLogin.setVisible(false);
 
         buttonLogin.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 User user = new User(textFieldUsername.getText(),textFieldPassword.getText());
-                LoginService.logUserIn(user);
+                LoginService.logUserIn(actionEvent, user);
             }
         });
 
@@ -42,32 +42,7 @@ public class LoginController implements Initializable {
         String s2 = textFieldPassword.getText();
 
         boolean check = (s1.isEmpty() || s1.trim().isEmpty()) || (s2.isEmpty() || s2.trim().isEmpty());
-        buttonLogin.setDisable(check);
-
-    }
-
-    public void printAll() {
-
-        String sqlSelectAllPersons = "SELECT * FROM users";
-        String connectionUrl = "jdbc:mysql://localhost:3306/autokool";
-
-        try (Connection conn = DriverManager.getConnection(connectionUrl, "root", "qwer1234");
-             PreparedStatement ps = conn.prepareStatement(sqlSelectAllPersons);
-             ResultSet rs = ps.executeQuery()) {
-
-
-
-            while (rs.next()) {
-                long id = rs.getLong("id");
-                String username = rs.getString("username");
-                String password = rs.getString("password");
-                System.out.println(id+" "+username + " " + password);
-                // do something with the extracted data...
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-
+        buttonLogin.setVisible(!check);
 
     }
 
