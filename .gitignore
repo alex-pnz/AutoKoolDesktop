@@ -45,3 +45,4 @@ build/
 /mvnw.cmd
 /.idea/uiDesigner.xml
 /.idea/vcs.xml
+/src/main/resources/Images/

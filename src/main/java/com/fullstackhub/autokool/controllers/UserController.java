@@ -1,5 +1,6 @@
 package com.fullstackhub.autokool.controllers;
 
+import com.fullstackhub.autokool.models.Question;
 import com.fullstackhub.autokool.models.User;
 import com.fullstackhub.autokool.sevices.DataBaseService;
 import javafx.collections.FXCollections;
@@ -13,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -41,11 +43,12 @@ public class UserController implements Initializable {
 
     @FXML
     private Label userMainUnsuccess;
+
     @FXML
     private Label userMainUncompleted;
 
-
     private User user;
+    private List<Question> questionList = new ArrayList<>();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -55,6 +58,16 @@ public class UserController implements Initializable {
                 System.exit(0);
             }
         });
+
+        userMainExam.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                questionList = DataBaseService.getQuestions(10);
+                userButton.setDisable(true);
+                userMainExam.setDisable(true);
+            }
+        });
+
     }
 
     public void setUserData(User user) {
@@ -84,10 +97,6 @@ public class UserController implements Initializable {
             userMainChart.setData(list);
 
         }
-
-
-
-
 
     }
 }

@@ -15,6 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,8 +55,10 @@ public class LoginService {
                                 stage.setScene(new Scene(root, 1000, 600));
                                 stage.show();
                                 stage.getScene().setFill(Color.TRANSPARENT);
+
                                 stage.centerOnScreen();
                                 stage.setResizable(false);
+
                             } catch (IOException e) {
                                 System.out.println(e.getMessage());
                             }
