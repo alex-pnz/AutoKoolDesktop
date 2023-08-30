@@ -13,6 +13,7 @@ public class DataBaseService {
     private static final Logger logger = LoggerFactory.getLogger(LoginService.class);
     private static final String sqlSelectAllPersons = "SELECT * FROM results WHERE user_id = ?";
     private static final String sqlSelectRandomQuestions = "SELECT * FROM questions ORDER BY rand() LIMIT ";
+    private static final String sqlSaveResult = "INSERT INTO results (user_id, result) VALUES (?, ?)";
     private static final String connectionUrl = "jdbc:mysql://localhost:3306/autokool";
 
     private static final String DB_USERNAME = "root";
@@ -77,6 +78,17 @@ public class DataBaseService {
     }
 
     public static boolean saveResults(User user, int result){
+        try(Connection connection = DriverManager.getConnection(connectionUrl, DB_USERNAME, DB_PASS);
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlSaveResult)) {
+            preparedStatement.setString(1, user.getId() + "");
+            preparedStatement.setString(2, result + "");
+            preparedStatement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+
         return false;
     }
 

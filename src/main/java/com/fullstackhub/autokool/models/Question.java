@@ -9,6 +9,7 @@ public class Question {
     private String answer2;
     private String answer3;
     private String image;
+    private boolean result;
 
     public Question(String question, String option1, String option2, String option3, String answer1, String answer2, String answer3, String image) {
         this.question = question;
@@ -51,6 +52,14 @@ public class Question {
 
     public String getImage() {
         return image;
+    }
+
+    public boolean getResult() {
+        return result;
+    }
+
+    public void setResult(boolean result) {
+        this.result = result;
     }
 
     @Override
