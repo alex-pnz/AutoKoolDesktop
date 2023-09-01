@@ -1,6 +1,7 @@
 package com.fullstackhub.autokool.sevices;
 
 import com.fullstackhub.autokool.HelloApplication;
+import com.fullstackhub.autokool.controllers.AdminController;
 import com.fullstackhub.autokool.controllers.UserController;
 import com.fullstackhub.autokool.models.User;
 
@@ -19,6 +20,9 @@ import javafx.stage.StageStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.fullstackhub.autokool.utils.Constants.DB_PASS;
+import static com.fullstackhub.autokool.utils.Constants.DB_USER;
+
 public class LoginService {
 
     private static final Logger logger = LoggerFactory.getLogger(LoginService.class);
@@ -28,7 +32,7 @@ public class LoginService {
         String connectionUrl = "jdbc:mysql://localhost:3306/autokool";
         String name = user.getName();
 
-        try (Connection connection = DriverManager.getConnection(connectionUrl, "root", "qwer1234");
+        try (Connection connection = DriverManager.getConnection(connectionUrl, DB_USER, DB_PASS);
              PreparedStatement preparedStatement = connection.prepareStatement(sqlSelectAllPersons)) {
 
             preparedStatement.setString(1, name);
@@ -39,25 +43,47 @@ public class LoginService {
                         int retrievedId = resultSet.getInt("id");
                         String retrievedUsername = resultSet.getString("username");
                         String retrievedPassword = resultSet.getString("password");
+                        String retrievedRole = resultSet.getString("role");
 
                         if (retrievedUsername.equals(user.getName()) && retrievedPassword.equals(user.getPassword())) {
                             logger.info("Correct password!");
                             user.setId(retrievedId);
+                            user.setRole((retrievedRole.equals("USER"))? User.Role.USER: User.Role.ADMIN);
                             try{
-                                FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("user-view.fxml"));
-                                Parent root = fxmlLoader.load();
+                                switch(user.getRole()){
+                                    case USER -> {
+                                        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("user-view.fxml"));
+                                        Parent root = fxmlLoader.load();
 
-                                UserController userController = fxmlLoader.getController();
-                                userController.setUserData(user);
+                                        UserController userController = fxmlLoader.getController();
+                                        userController.setUserData(user);
 
-                                Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-                                stage.setTitle("Пользователь N" + retrievedId+ ": " + retrievedUsername);
-                                stage.setScene(new Scene(root, 1000, 600));
-                                stage.show();
-                                stage.getScene().setFill(Color.TRANSPARENT);
+                                        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+                                        stage.setTitle("Пользователь N" + retrievedId+ ": " + retrievedUsername);
+                                        stage.setScene(new Scene(root, 1000, 600));
+                                        stage.show();
+                                        stage.getScene().setFill(Color.TRANSPARENT);
 
-                                stage.centerOnScreen();
-                                stage.setResizable(false);
+                                        stage.centerOnScreen();
+                                        stage.setResizable(false);
+                                    }
+                                    case ADMIN -> {
+                                        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("admin-view.fxml"));
+                                        Parent root = fxmlLoader.load();
+
+                                        AdminController adminController = fxmlLoader.getController();
+
+                                        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+                                        stage.setTitle("Autokool: Admin Dashboard");
+                                        stage.setScene(new Scene(root, 1000, 600));
+                                        stage.show();
+                                        stage.getScene().setFill(Color.TRANSPARENT);
+
+                                        stage.centerOnScreen();
+                                        stage.setResizable(false);
+                                    }
+                                }
+
 
                             } catch (IOException e) {
                                 System.out.println(e.getMessage());
