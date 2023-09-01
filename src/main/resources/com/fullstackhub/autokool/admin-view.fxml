@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="userPane" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fullstackhub.autokool.controllers.AdminController">
+   <children>
+      <Pane layoutX="5.0" layoutY="14.0" prefHeight="46.0" prefWidth="1015.0" style="-fx-border-radius: 10 10 10 10; -fx-background-radius: 10 10 10 10; -fx-background-color: linear-gradient(to bottom, #f52c3d, #fc6b03);">
+         <children>
+            <Label layoutX="12.0" layoutY="5.0" text="Панель администратора" textFill="#fffefe">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <TabPane layoutY="63.0" prefHeight="544.0" prefWidth="1026.0" stylesheets="@../../../Images/tab.css" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab style="-fx-font-weight: 700; -fx-font-size: 14;" text="Студенты">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="515.0" prefWidth="992.0">
+                     <children>
+                        <TabPane layoutX="14.0" layoutY="258.0" prefHeight="245.0" prefWidth="371.0" stylesheets="@../../../Images/tab.css" tabClosingPolicy="UNAVAILABLE">
+                          <tabs>
+                            <Tab text="Редактировать данные студента">
+                              <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <Label layoutX="14.0" layoutY="25.0" text="Имя:">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <Label layoutX="14.0" layoutY="59.0" text="Пароль:">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <TextField fx:id="nameEdit" layoutX="76.0" layoutY="23.0" />
+                                          <TextField fx:id="passwordEdit" layoutX="76.0" layoutY="56.0" />
+                                          <Button fx:id="buttonEdit" layoutX="12.0" layoutY="122.0" mnemonicParsing="false" text="Изменить" />
+                                          <Label layoutX="14.0" layoutY="90.0" text="Роль:">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <ChoiceBox fx:id="checkBoxEdit" layoutX="76.0" layoutY="90.0" prefHeight="25.0" prefWidth="148.0" />
+                                          <Button fx:id="buttonDelete" layoutX="12.0" layoutY="154.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="70.0" text="Удалить" />
+                                       </children>
+                                    </AnchorPane>
+                              </content>
+                            </Tab>
+                            <Tab text="Добавить неового студента">
+                              <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <Label layoutX="14.0" layoutY="25.0" text="Имя:">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <Label layoutX="14.0" layoutY="59.0" text="Пароль:">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <TextField fx:id="passNew" layoutX="76.0" layoutY="56.0" />
+                                          <TextField fx:id="nameNew" layoutX="76.0" layoutY="23.0" />
+                                          <Button fx:id="buttonNew" layoutX="11.0" layoutY="122.0" mnemonicParsing="false" text="Сохранить" />
+                                          <ChoiceBox fx:id="checkBoxNew" layoutX="76.0" layoutY="90.0" prefHeight="25.0" prefWidth="148.0" />
+                                          <Label layoutX="14.0" layoutY="90.0" text="Роль:">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </AnchorPane>
+                              </content>
+                            </Tab>
+                          </tabs>
+                        </TabPane>
+                        <TableView fx:id="studentListView" layoutX="14.0" layoutY="8.0" onMouseClicked="#handleTableClick" prefHeight="250.0" prefWidth="998.0">
+                          <columns>
+                            <TableColumn fx:id="id" prefWidth="95.0" text="N" />
+                            <TableColumn fx:id="username" prefWidth="200.0" text="Имя" />
+                              <TableColumn fx:id="password" minWidth="0.0" prefWidth="200.0" text="Пароль" />
+                              <TableColumn fx:id="role" prefWidth="100.0" text="Роль" />
+                              <TableColumn fx:id="pass" prefWidth="100.0" text="Успешно" />
+                              <TableColumn fx:id="fail" prefWidth="100.0" text="Не удачно" />
+                              <TableColumn fx:id="incomplete" prefWidth="100.0" text="Не завершил" />
+                              <TableColumn fx:id="total" prefWidth="103.0" text="Всего" />
+                          </columns>
+                        </TableView>
+                        <BarChart fx:id="chartEdit" layoutX="385.0" layoutY="257.0" prefHeight="244.0" prefWidth="626.0">
+                          <xAxis>
+                            <CategoryAxis side="BOTTOM" />
+                          </xAxis>
+                          <yAxis>
+                            <NumberAxis side="LEFT" />
+                          </yAxis>
+                        </BarChart>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab style="-fx-font-weight: 700; -fx-font-size: 14;" text="Билеты">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="questionsListView" layoutX="14.0" layoutY="8.0" prefHeight="250.0" prefWidth="1004.0" />
+                        <TabPane layoutX="14.0" layoutY="258.0" prefHeight="245.0" prefWidth="999.0" stylesheets="@../../../Images/tab.css" tabClosingPolicy="UNAVAILABLE">
+                           <tabs>
+                              <Tab text="Редактировать билет">
+                                 <content>
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <Label layoutX="14.0" layoutY="25.0" text="Вопрос:">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <Label layoutX="14.0" layoutY="59.0" text="Вариант ответа 1:">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <TextField fx:id="questionsQuestionEdit" layoutX="76.0" layoutY="23.0" prefHeight="25.0" prefWidth="914.0" />
+                                          <Button fx:id="buttonQuestionEdit" layoutX="14.0" layoutY="181.0" mnemonicParsing="false" text="Изменить" />
+                                          <TextField fx:id="questionsOption1Edit" layoutX="133.0" layoutY="56.0" prefHeight="25.0" prefWidth="857.0" />
+                                          <Label layoutX="14.0" layoutY="92.0" text="Вариант ответа 2:">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <TextField fx:id="questionsOption2Edit" layoutX="133.0" layoutY="89.0" prefHeight="25.0" prefWidth="857.0" />
+                                          <Label layoutX="14.0" layoutY="125.0" text="Вариант ответа 3:">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <TextField fx:id="questionsOption3Edit" layoutX="133.0" layoutY="122.0" prefHeight="25.0" prefWidth="857.0" />
+                                          <Label layoutX="14.0" layoutY="154.0" text="Правильные ответы:">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <CheckBox fx:id="questionsAnswer1Edit" layoutX="155.0" layoutY="156.0" mnemonicParsing="false" />
+                                          <CheckBox fx:id="questionsAnswer2Edit" layoutX="181.0" layoutY="156.0" mnemonicParsing="false" />
+                                          <CheckBox fx:id="questionsAnswer3Edit" layoutX="207.0" layoutY="156.0" mnemonicParsing="false" />
+                                          <Button fx:id="buttonQuestionDelete" layoutX="90.0" layoutY="181.0" mnemonicParsing="false" text="Изменить" />
+                                       </children>
+                                    </AnchorPane>
+                                 </content>
+                              </Tab>
+                              <Tab text="Добавить неовый билет">
+                                 <content>
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <Label layoutX="14.0" layoutY="25.0" text="Вопрос:">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <Label layoutX="14.0" layoutY="59.0" text="Вариант ответа 1:">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <TextField fx:id="questionsOption1New" layoutX="133.0" layoutY="56.0" prefHeight="25.0" prefWidth="857.0" />
+                                          <TextField fx:id="questionsQuestionNew" layoutX="76.0" layoutY="23.0" prefHeight="25.0" prefWidth="915.0" />
+                                          <Button fx:id="questionsButtonNew" layoutX="14.0" layoutY="181.0" mnemonicParsing="false" text="Сохранить" />
+                                          <Label layoutX="14.0" layoutY="92.0" text="Вариант ответа 2:">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <TextField fx:id="questionsOption2New" layoutX="133.0" layoutY="89.0" prefHeight="25.0" prefWidth="857.0" />
+                                          <Label layoutX="14.0" layoutY="125.0" text="Вариант ответа 3:">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <TextField fx:id="questionsOption3New" layoutX="133.0" layoutY="122.0" prefHeight="25.0" prefWidth="857.0" />
+                                          <Label layoutX="14.0" layoutY="154.0" text="Правильные ответы:">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <CheckBox fx:id="questionsAnswer1New" layoutX="155.0" layoutY="156.0" mnemonicParsing="false" />
+                                          <CheckBox fx:id="questionsAnswer3New" layoutX="207.0" layoutY="156.0" mnemonicParsing="false" />
+                                          <CheckBox fx:id="questionsAnswer2New" layoutX="181.0" layoutY="156.0" mnemonicParsing="false" />
+                                       </children>
+                                    </AnchorPane>
+                                 </content>
+                              </Tab>
+                           </tabs>
+                        </TabPane>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>

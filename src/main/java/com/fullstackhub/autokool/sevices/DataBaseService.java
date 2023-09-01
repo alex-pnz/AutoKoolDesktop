@@ -2,6 +2,7 @@ package com.fullstackhub.autokool.sevices;
 
 import com.fullstackhub.autokool.models.Question;
 import com.fullstackhub.autokool.models.User;
+import javafx.beans.property.SimpleStringProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,21 +10,30 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.fullstackhub.autokool.utils.Constants.DB_PASS;
+import static com.fullstackhub.autokool.utils.Constants.DB_USER;
+
 public class DataBaseService {
-    private static final Logger logger = LoggerFactory.getLogger(LoginService.class);
+    private static final Logger logger = LoggerFactory.getLogger(DataBaseService.class);
     private static final String sqlSelectAllPersons = "SELECT * FROM results WHERE user_id = ?";
     private static final String sqlSelectRandomQuestions = "SELECT * FROM questions ORDER BY rand() LIMIT ";
+    private static final String sqlGetAllUsersWithStats = """
+            SELECT * FROM users LEFT JOIN (SELECT user_id AS x, COUNT(result) AS total,
+            	(SELECT COUNT(result) FROM results WHERE result = 0 AND user_id = x) AS fail,
+            	(SELECT COUNT(result) FROM results WHERE result = 1 AND user_id = x) AS pass,
+                (SELECT COUNT(result) FROM results WHERE result = 2 AND user_id = x) AS incomplete
+             FROM results GROUP BY user_id) AS res_out ON users.id = res_out.x;
+            """;
+    private static final String sqlUpdateUser = "UPDATE users SET username = ?, password = ?, role = ? WHERE id = ?;";
+    private static final String sqlSaveUser = "INSERT INTO users (username, password, role) VALUES (?, ?, ?);";
+    private static final String sqlDeleteUser = "DELETE FROM users WHERE id = ?;";
     private static final String sqlSaveResult = "INSERT INTO results (user_id, result) VALUES (?, ?)";
     private static final String connectionUrl = "jdbc:mysql://localhost:3306/autokool";
-
-    private static final String DB_USERNAME = "root";
-    private static final String DB_PASS = "qwer1234";
-
 
     public static boolean findResults(User user) {
 
         List<Integer> list = null;
-        try(Connection connection = DriverManager.getConnection(connectionUrl, DB_USERNAME, DB_PASS);
+        try(Connection connection = DriverManager.getConnection(connectionUrl, DB_USER, DB_PASS);
             PreparedStatement preparedStatement = connection.prepareStatement(sqlSelectAllPersons)) {
 
             preparedStatement.setString(1, user.getId() + "");
@@ -39,15 +49,76 @@ public class DataBaseService {
             user.setResultList(list);
             return true;
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            logger.error(e.getMessage());
         }
 
         return false;
     }
 
+    public static List<User> getAllUsers(){
+
+        List<User> list = null;
+
+        try(Connection connection = DriverManager.getConnection(connectionUrl, DB_USER, DB_PASS);
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlGetAllUsersWithStats);
+            ResultSet resultSet = preparedStatement.executeQuery()) {
+            list = new ArrayList<>();
+            if (resultSet.isBeforeFirst()) {
+                while (resultSet.next()) {
+                    list.add(new User(
+                            resultSet.getInt("id"),
+                            resultSet.getString("username"),
+                            resultSet.getString("password"),
+                            resultSet.getString("role"),
+                            resultSet.getInt("total"),
+                            resultSet.getInt("fail"),
+                            resultSet.getInt("pass"),
+                            resultSet.getInt("incomplete")
+                    ));
+                }
+            }
+            return list;
+
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+        }
+
+        return null;
+    }
+
+    public static boolean saveUser(String newName, String newPassword, User.Role role) {
+        try(Connection connection = DriverManager.getConnection(connectionUrl, DB_USER, DB_PASS);
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlSaveUser)) {
+            preparedStatement.setString(1, newName);
+            preparedStatement.setString(2, newPassword);
+            preparedStatement.setString(3, role.name());
+            preparedStatement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            logger.error(e.getMessage()+ " Unable to save user to DB");
+        }
+        return false;
+    }
+
+    public static boolean removeUser(User user){
+        try(Connection connection = DriverManager.getConnection(connectionUrl, DB_USER, DB_PASS);
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlDeleteUser)) {
+            preparedStatement.setString(1, user.getId() + "");
+            preparedStatement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            logger.error(e.getMessage()+ " Unable to delete user from DB");
+        }
+        return false;
+    }
+
+    public static boolean saveQuestion(Question question){
+        return false;
+    }
+
     public static List<Question> getQuestions(int n){
 
-        try(Connection connection = DriverManager.getConnection(connectionUrl, DB_USERNAME, DB_PASS);
+        try(Connection connection = DriverManager.getConnection(connectionUrl, DB_USER, DB_PASS);
             PreparedStatement preparedStatement = connection.prepareStatement(sqlSelectRandomQuestions+n)) {
 
             List<Question> list = new ArrayList<>();
@@ -71,25 +142,39 @@ public class DataBaseService {
             logger.info(list.get(0).toString());
             return list;
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            logger.error(e.getMessage());
         }
 
         return null;
     }
 
     public static boolean saveResults(User user, int result){
-        try(Connection connection = DriverManager.getConnection(connectionUrl, DB_USERNAME, DB_PASS);
+        try(Connection connection = DriverManager.getConnection(connectionUrl, DB_USER, DB_PASS);
             PreparedStatement preparedStatement = connection.prepareStatement(sqlSaveResult)) {
             preparedStatement.setString(1, user.getId() + "");
             preparedStatement.setString(2, result + "");
             preparedStatement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            logger.error(e.getMessage() + " Unable to save results to DB");
         }
 
 
         return false;
     }
 
+    public static boolean updateRecord(User user, String newName, String newPassword, User.Role role) {
+        try(Connection connection = DriverManager.getConnection(connectionUrl, DB_USER, DB_PASS);
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlUpdateUser)) {
+            preparedStatement.setString(1, newName);
+            preparedStatement.setString(2, newPassword);
+            preparedStatement.setString(3, role.name());
+            preparedStatement.setString(4, user.getId() + "");
+            preparedStatement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            logger.error(e.getMessage()+ " Unable to update user to DB");
+        }
+        return false;
+    }
 }

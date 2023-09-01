@@ -105,7 +105,7 @@ public class UserController implements Initializable {
     private static int numberOfQuestionsToPass = 5;
     private Question currentQuestion;
 
-    private static final Logger logger = LoggerFactory.getLogger(LoginService.class);
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
