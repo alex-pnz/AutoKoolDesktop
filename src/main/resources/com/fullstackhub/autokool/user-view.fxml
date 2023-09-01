@@ -115,7 +115,7 @@
             </Text>
             <ImageView fx:id="examPaneImage" fitHeight="188.0" fitWidth="300.0" layoutX="14.0" layoutY="146.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../Images/6082.jpg" />
+                  <Image url="@../../../Images1/6082.jpg" />
                </image>
             </ImageView>
             <CheckBox fx:id="examPaneOption1" layoutX="15.0" layoutY="369.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="685.0" text="CheckBox" wrapText="true" />

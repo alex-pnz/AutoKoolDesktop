@@ -12,13 +12,15 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="userPane" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fullstackhub.autokool.controllers.AdminController">
+<AnchorPane fx:id="userPane" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.fullstackhub.autokool.controllers.AdminController">
    <children>
-      <Pane layoutX="5.0" layoutY="14.0" prefHeight="46.0" prefWidth="1015.0" style="-fx-border-radius: 10 10 10 10; -fx-background-radius: 10 10 10 10; -fx-background-color: linear-gradient(to bottom, #f52c3d, #fc6b03);">
+      <Pane layoutX="5.0" layoutY="14.0" prefHeight="46.0" prefWidth="985.0" style="-fx-border-radius: 10 10 10 10; -fx-background-radius: 10 10 10 10; -fx-background-color: linear-gradient(to bottom, #f52c3d, #fc6b03);">
          <children>
             <Label layoutX="12.0" layoutY="5.0" text="Панель администратора" textFill="#fffefe">
                <font>
@@ -27,13 +29,13 @@
             </Label>
          </children>
       </Pane>
-      <TabPane layoutY="63.0" prefHeight="544.0" prefWidth="1026.0" stylesheets="@../../../Images/tab.css" tabClosingPolicy="UNAVAILABLE">
+      <TabPane layoutY="63.0" prefHeight="544.0" prefWidth="1026.0" stylesheets="@tab.css" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab style="-fx-font-weight: 700; -fx-font-size: 14;" text="Студенты">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="515.0" prefWidth="992.0">
                      <children>
-                        <TabPane layoutX="14.0" layoutY="258.0" prefHeight="245.0" prefWidth="371.0" stylesheets="@../../../Images/tab.css" tabClosingPolicy="UNAVAILABLE">
+                        <TabPane layoutX="14.0" layoutY="258.0" prefHeight="245.0" prefWidth="371.0" stylesheets="@tab.css" tabClosingPolicy="UNAVAILABLE">
                           <tabs>
                             <Tab text="Редактировать данные студента">
                               <content>
@@ -63,7 +65,7 @@
                                     </AnchorPane>
                               </content>
                             </Tab>
-                            <Tab text="Добавить неового студента">
+                            <Tab text="Добавить нового студента">
                               <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                        <children>
@@ -92,16 +94,16 @@
                             </Tab>
                           </tabs>
                         </TabPane>
-                        <TableView fx:id="studentListView" layoutX="14.0" layoutY="8.0" onMouseClicked="#handleTableClick" prefHeight="250.0" prefWidth="998.0">
+                        <TableView fx:id="studentListView" layoutX="6.0" layoutY="8.0" maxWidth="990.0" onMouseClicked="#handleTableClickStudents" prefHeight="250.0" prefWidth="990.0">
                           <columns>
                             <TableColumn fx:id="id" prefWidth="95.0" text="N" />
                             <TableColumn fx:id="username" prefWidth="200.0" text="Имя" />
-                              <TableColumn fx:id="password" minWidth="0.0" prefWidth="200.0" text="Пароль" />
+                              <TableColumn fx:id="password" minWidth="0.0" prefWidth="180.0" text="Пароль" />
                               <TableColumn fx:id="role" prefWidth="100.0" text="Роль" />
                               <TableColumn fx:id="pass" prefWidth="100.0" text="Успешно" />
                               <TableColumn fx:id="fail" prefWidth="100.0" text="Не удачно" />
                               <TableColumn fx:id="incomplete" prefWidth="100.0" text="Не завершил" />
-                              <TableColumn fx:id="total" prefWidth="103.0" text="Всего" />
+                              <TableColumn fx:id="total" prefWidth="110.0" text="Всего" />
                           </columns>
                         </TableView>
                         <BarChart fx:id="chartEdit" layoutX="385.0" layoutY="257.0" prefHeight="244.0" prefWidth="626.0">
@@ -120,12 +122,22 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView fx:id="questionsListView" layoutX="14.0" layoutY="8.0" prefHeight="250.0" prefWidth="1004.0" />
-                        <TabPane layoutX="14.0" layoutY="258.0" prefHeight="245.0" prefWidth="999.0" stylesheets="@../../../Images/tab.css" tabClosingPolicy="UNAVAILABLE">
+                        <TableView fx:id="questionsListView" layoutX="7.0" layoutY="8.0" maxWidth="990.0" onMouseClicked="#handleTableClickQuestions" prefHeight="250.0" prefWidth="990.0">
+                           <columns>
+                              <TableColumn fx:id="questionColumn" prefWidth="465.0" text="Вопрос" />
+                              <TableColumn fx:id="option1Column" minWidth="0.0" prefWidth="120.0" text="Вариант ответа 1" />
+                              <TableColumn fx:id="option2Column" minWidth="0.0" prefWidth="120.0" text="Вариант ответа 2" />
+                              <TableColumn fx:id="option3Column" prefWidth="120.0" text="Вариант ответа 3" />
+                              <TableColumn fx:id="answer1Column" prefWidth="20.0" />
+                              <TableColumn fx:id="answer2Column" prefWidth="20.0" />
+                              <TableColumn fx:id="answer3Column" prefWidth="20.0" />
+                              <TableColumn fx:id="imageColumn" prefWidth="90.0" text="Картинка" />
+                           </columns></TableView>
+                        <TabPane layoutX="14.0" layoutY="258.0" prefHeight="245.0" prefWidth="999.0" stylesheets="@tab.css" tabClosingPolicy="UNAVAILABLE">
                            <tabs>
                               <Tab text="Редактировать билет">
                                  <content>
-                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="216.0" prefWidth="982.0">
                                        <children>
                                           <Label layoutX="14.0" layoutY="25.0" text="Вопрос:">
                                              <font>
@@ -137,21 +149,21 @@
                                                 <Font size="14.0" />
                                              </font>
                                           </Label>
-                                          <TextField fx:id="questionsQuestionEdit" layoutX="76.0" layoutY="23.0" prefHeight="25.0" prefWidth="914.0" />
+                                          <TextField fx:id="questionsQuestionEdit" layoutX="76.0" layoutY="23.0" prefHeight="25.0" prefWidth="598.0" />
                                           <Button fx:id="buttonQuestionEdit" layoutX="14.0" layoutY="181.0" mnemonicParsing="false" text="Изменить" />
-                                          <TextField fx:id="questionsOption1Edit" layoutX="133.0" layoutY="56.0" prefHeight="25.0" prefWidth="857.0" />
+                                          <TextField fx:id="questionsOption1Edit" layoutX="133.0" layoutY="56.0" prefHeight="25.0" prefWidth="540.0" />
                                           <Label layoutX="14.0" layoutY="92.0" text="Вариант ответа 2:">
                                              <font>
                                                 <Font size="14.0" />
                                              </font>
                                           </Label>
-                                          <TextField fx:id="questionsOption2Edit" layoutX="133.0" layoutY="89.0" prefHeight="25.0" prefWidth="857.0" />
+                                          <TextField fx:id="questionsOption2Edit" layoutX="133.0" layoutY="89.0" prefHeight="25.0" prefWidth="540.0" />
                                           <Label layoutX="14.0" layoutY="125.0" text="Вариант ответа 3:">
                                              <font>
                                                 <Font size="14.0" />
                                              </font>
                                           </Label>
-                                          <TextField fx:id="questionsOption3Edit" layoutX="133.0" layoutY="122.0" prefHeight="25.0" prefWidth="857.0" />
+                                          <TextField fx:id="questionsOption3Edit" layoutX="133.0" layoutY="122.0" prefHeight="25.0" prefWidth="541.0" />
                                           <Label layoutX="14.0" layoutY="154.0" text="Правильные ответы:">
                                              <font>
                                                 <Font size="14.0" />
@@ -160,12 +172,18 @@
                                           <CheckBox fx:id="questionsAnswer1Edit" layoutX="155.0" layoutY="156.0" mnemonicParsing="false" />
                                           <CheckBox fx:id="questionsAnswer2Edit" layoutX="181.0" layoutY="156.0" mnemonicParsing="false" />
                                           <CheckBox fx:id="questionsAnswer3Edit" layoutX="207.0" layoutY="156.0" mnemonicParsing="false" />
-                                          <Button fx:id="buttonQuestionDelete" layoutX="90.0" layoutY="181.0" mnemonicParsing="false" text="Изменить" />
+                                          <Button fx:id="buttonQuestionDelete" layoutX="90.0" layoutY="181.0" mnemonicParsing="false" text="Удалить" />
+                                          <Button fx:id="buttonQuestionImageEdit" layoutX="156.0" layoutY="181.0" mnemonicParsing="false" text="Установить изображение " />
+                                          <Label fx:id="labelQuestionImageEdit" layoutX="323.0" layoutY="185.0" />
+                                          <ImageView fx:id="questionImageViewEdit" fitHeight="188.0" fitWidth="300.0" layoutX="677.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../../../../../Images/6082.jpg" />
+                                             </image></ImageView>
                                        </children>
                                     </AnchorPane>
                                  </content>
                               </Tab>
-                              <Tab text="Добавить неовый билет">
+                              <Tab text="Добавить новый билет">
                                  <content>
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                        <children>
@@ -179,21 +197,21 @@
                                                 <Font size="14.0" />
                                              </font>
                                           </Label>
-                                          <TextField fx:id="questionsOption1New" layoutX="133.0" layoutY="56.0" prefHeight="25.0" prefWidth="857.0" />
-                                          <TextField fx:id="questionsQuestionNew" layoutX="76.0" layoutY="23.0" prefHeight="25.0" prefWidth="915.0" />
+                                          <TextField fx:id="questionsOption1New" layoutX="133.0" layoutY="56.0" prefHeight="25.0" prefWidth="542.0" />
+                                          <TextField fx:id="questionsQuestionNew" layoutX="76.0" layoutY="23.0" prefHeight="25.0" prefWidth="599.0" />
                                           <Button fx:id="questionsButtonNew" layoutX="14.0" layoutY="181.0" mnemonicParsing="false" text="Сохранить" />
                                           <Label layoutX="14.0" layoutY="92.0" text="Вариант ответа 2:">
                                              <font>
                                                 <Font size="14.0" />
                                              </font>
                                           </Label>
-                                          <TextField fx:id="questionsOption2New" layoutX="133.0" layoutY="89.0" prefHeight="25.0" prefWidth="857.0" />
+                                          <TextField fx:id="questionsOption2New" layoutX="133.0" layoutY="89.0" prefHeight="25.0" prefWidth="542.0" />
                                           <Label layoutX="14.0" layoutY="125.0" text="Вариант ответа 3:">
                                              <font>
                                                 <Font size="14.0" />
                                              </font>
                                           </Label>
-                                          <TextField fx:id="questionsOption3New" layoutX="133.0" layoutY="122.0" prefHeight="25.0" prefWidth="857.0" />
+                                          <TextField fx:id="questionsOption3New" layoutX="133.0" layoutY="122.0" prefHeight="25.0" prefWidth="542.0" />
                                           <Label layoutX="14.0" layoutY="154.0" text="Правильные ответы:">
                                              <font>
                                                 <Font size="14.0" />
@@ -202,6 +220,12 @@
                                           <CheckBox fx:id="questionsAnswer1New" layoutX="155.0" layoutY="156.0" mnemonicParsing="false" />
                                           <CheckBox fx:id="questionsAnswer3New" layoutX="207.0" layoutY="156.0" mnemonicParsing="false" />
                                           <CheckBox fx:id="questionsAnswer2New" layoutX="181.0" layoutY="156.0" mnemonicParsing="false" />
+                                          <Button fx:id="buttonQuestionImageNew" layoutX="94.0" layoutY="181.0" mnemonicParsing="false" text="Установить изображение " />
+                                          <Label fx:id="labelQuestionImageNew" layoutX="260.0" layoutY="185.0" />
+                                          <ImageView fx:id="questionImageViewNew" fitHeight="188.0" fitWidth="300.0" layoutX="678.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../../../../../Images/6228.jpg" />
+                                             </image></ImageView>
                                        </children>
                                     </AnchorPane>
                                  </content>

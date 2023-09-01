@@ -31,10 +31,8 @@
             <Font name="Microsoft Sans Serif" size="36.0" />
          </font>
       </Label>
-      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="226.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../../Images/carlogo.png" />
-         </image>
+      <ImageView fx:id="logo" fitHeight="150.0" fitWidth="200.0" layoutX="218.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
+         <Image url="@car-logo.png" />
       </ImageView>
    </children>
 </AnchorPane>

@@ -3,14 +3,12 @@ package com.fullstackhub.autokool.controllers;
 import com.fullstackhub.autokool.models.Question;
 import com.fullstackhub.autokool.models.User;
 import com.fullstackhub.autokool.sevices.DataBaseService;
-import com.fullstackhub.autokool.sevices.LoginService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -18,13 +16,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -278,8 +272,8 @@ public class UserController implements Initializable {
             if (currentQuestion.getImage() == null) {
                 examPaneImage.setVisible(false);
             } else {
-                String path = String.format("/Images/%s",currentQuestion.getImage());
-                Image image = image = new Image(getClass().getResource(path).toExternalForm());
+                String path = String.format("file:///C:/Users/Sasha/IdeaProjects/AutoKool/Images/%s",currentQuestion.getImage());
+                Image image = new Image(path);
 
                 examPaneImage.setImage(image);
                 examPaneImage.setVisible(true);
