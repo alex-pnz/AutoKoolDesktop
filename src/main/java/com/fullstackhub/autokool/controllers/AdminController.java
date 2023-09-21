@@ -165,15 +165,15 @@ public class AdminController implements Initializable {
     @FXML
     private ChoiceBox<Role> checkBoxEdit;
 
-    XYChart.Series series1;
-    XYChart.Series series2;
-    XYChart.Series series3;
-    XYChart.Series series4;
+    private XYChart.Series series1;
+    private XYChart.Series series2;
+    private XYChart.Series series3;
+    private XYChart.Series series4;
     private static final Logger logger = LoggerFactory.getLogger(LoginService.class);
-    ObservableList<User> observableList;
-    ObservableList<Question> observableListQuestions;
-    User user;
-    Question question;
+    private ObservableList<User> observableList;
+    private ObservableList<Question> observableListQuestions;
+    private User user;
+    private Question question;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -225,9 +225,12 @@ public class AdminController implements Initializable {
                         return;
                     }
                     DataBaseService.saveUser(nameNew.getText(), passNew.getText(), checkBoxNew.getValue());
+                    setTableViewDataStudent();
+                    setChart(new User(nameNew.getText(), passNew.getText()));
                     logger.info("User saved");
                 }
-                setTableViewDataStudent();
+
+
             }
         });
 
@@ -385,7 +388,10 @@ public class AdminController implements Initializable {
         buttonEdit.setDisable(false);
         buttonDelete.setDisable(false);
 
+        setChart(user);
+    }
 
+    private void setChart(User user){
         series1 = new XYChart.Series();
         series1.setName("Успешно");
         series1.getData().add(new XYChart.Data("Успешно", user.getPass()));
@@ -401,6 +407,7 @@ public class AdminController implements Initializable {
 
         chartEdit.getData().addAll(series1, series2, series3, series4);
     }
+
     @FXML
     public void handleTableClickQuestions(){
         if (observableListQuestions.isEmpty()) {

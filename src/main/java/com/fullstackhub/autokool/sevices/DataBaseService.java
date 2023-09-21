@@ -9,8 +9,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.fullstackhub.autokool.utils.Constants.DB_PASS;
-import static com.fullstackhub.autokool.utils.Constants.DB_USER;
+import static com.fullstackhub.autokool.utils.Constants.*;
 
 public class DataBaseService {
     private static final Logger logger = LoggerFactory.getLogger(DataBaseService.class);
@@ -31,12 +30,11 @@ public class DataBaseService {
     private static final String sqlDeleteUser = "DELETE FROM users WHERE id = ?;";
     private static final String sqlDeleteQuestion = "DELETE FROM questions WHERE idquestions = ?;";
     private static final String sqlSaveResult = "INSERT INTO results (user_id, result) VALUES (?, ?)";
-    private static final String connectionUrl = "jdbc:mysql://localhost:3306/autokool";
 
     public static boolean findResults(User user) {
 
         List<Integer> list = null;
-        try(Connection connection = DriverManager.getConnection(connectionUrl, DB_USER, DB_PASS);
+        try(Connection connection = DriverManager.getConnection(CONNECTION_URL, DB_USER, DB_PASS);
             PreparedStatement preparedStatement = connection.prepareStatement(sqlSelectAllResults)) {
 
             preparedStatement.setString(1, user.getId() + "");
@@ -62,7 +60,7 @@ public class DataBaseService {
 
         List<User> list = null;
 
-        try(Connection connection = DriverManager.getConnection(connectionUrl, DB_USER, DB_PASS);
+        try(Connection connection = DriverManager.getConnection(CONNECTION_URL, DB_USER, DB_PASS);
             PreparedStatement preparedStatement = connection.prepareStatement(sqlGetAllUsersWithStats);
             ResultSet resultSet = preparedStatement.executeQuery()) {
             list = new ArrayList<>();
@@ -90,7 +88,7 @@ public class DataBaseService {
     }
 
     public static boolean saveUser(String newName, String newPassword, User.Role role) {
-        try(Connection connection = DriverManager.getConnection(connectionUrl, DB_USER, DB_PASS);
+        try(Connection connection = DriverManager.getConnection(CONNECTION_URL, DB_USER, DB_PASS);
             PreparedStatement preparedStatement = connection.prepareStatement(sqlSaveUser)) {
             preparedStatement.setString(1, newName);
             preparedStatement.setString(2, newPassword);
@@ -106,7 +104,7 @@ public class DataBaseService {
     public static boolean saveQuestion(String newQuestion, String newOption1, String newOption2,
                                        String newOption3, int newAnswer1, int newAnswer2,
                                        int newAnswer3, String newImage) {
-        try(Connection connection = DriverManager.getConnection(connectionUrl, DB_USER, DB_PASS);
+        try(Connection connection = DriverManager.getConnection(CONNECTION_URL, DB_USER, DB_PASS);
             PreparedStatement preparedStatement = connection.prepareStatement(sqlSaveQuestion)) {
 
             preparedStatement.setString(1, newQuestion);
@@ -126,10 +124,13 @@ public class DataBaseService {
     }
 
     public static boolean removeUser(User user){
-        try(Connection connection = DriverManager.getConnection(connectionUrl, DB_USER, DB_PASS);
+        try(Connection connection = DriverManager.getConnection(CONNECTION_URL, DB_USER, DB_PASS);
             PreparedStatement preparedStatement = connection.prepareStatement(sqlDeleteUser)) {
+
             preparedStatement.setString(1, user.getId() + "");
+
             preparedStatement.executeUpdate();
+
             return true;
         } catch (SQLException e) {
             logger.error(e.getMessage()+ " Unable to delete user from DB");
@@ -138,7 +139,7 @@ public class DataBaseService {
     }
 
     public static boolean removeQuestion(Question question){
-        try(Connection connection = DriverManager.getConnection(connectionUrl, DB_USER, DB_PASS);
+        try(Connection connection = DriverManager.getConnection(CONNECTION_URL, DB_USER, DB_PASS);
             PreparedStatement preparedStatement = connection.prepareStatement(sqlDeleteQuestion)) {
             preparedStatement.setString(1, question.getId() + "");
             preparedStatement.executeUpdate();
@@ -153,7 +154,7 @@ public class DataBaseService {
                                        String newOption3, int newAnswer1, int newAnswer2,
                                        int newAnswer3, String newImage, int idquestions) {
         logger.info(idquestions +" ID ");
-        try(Connection connection = DriverManager.getConnection(connectionUrl, DB_USER, DB_PASS);
+        try(Connection connection = DriverManager.getConnection(CONNECTION_URL, DB_USER, DB_PASS);
             PreparedStatement preparedStatement = connection.prepareStatement(sqlUpdateQuestion)) {
 
             preparedStatement.setString(1, newQuestion);
@@ -177,7 +178,7 @@ public class DataBaseService {
 
     public static List<Question> getQuestions(int n){
 
-        try(Connection connection = DriverManager.getConnection(connectionUrl, DB_USER, DB_PASS);
+        try(Connection connection = DriverManager.getConnection(CONNECTION_URL, DB_USER, DB_PASS);
             PreparedStatement preparedStatement = connection.prepareStatement(sqlSelectRandomQuestions+n)) {
 
             List<Question> list = new ArrayList<>();
@@ -210,7 +211,7 @@ public class DataBaseService {
 
     public static List<Question> getAllQuestions(){
 
-        try(Connection connection = DriverManager.getConnection(connectionUrl, DB_USER, DB_PASS);
+        try(Connection connection = DriverManager.getConnection(CONNECTION_URL, DB_USER, DB_PASS);
             PreparedStatement preparedStatement = connection.prepareStatement(sqlSelectAllQuestions)) {
 
             List<Question> list = new ArrayList<>();
@@ -243,7 +244,7 @@ public class DataBaseService {
 
 
     public static boolean saveResults(User user, int result){
-        try(Connection connection = DriverManager.getConnection(connectionUrl, DB_USER, DB_PASS);
+        try(Connection connection = DriverManager.getConnection(CONNECTION_URL, DB_USER, DB_PASS);
             PreparedStatement preparedStatement = connection.prepareStatement(sqlSaveResult)) {
             preparedStatement.setString(1, user.getId() + "");
             preparedStatement.setString(2, result + "");
@@ -258,7 +259,7 @@ public class DataBaseService {
     }
 
     public static boolean updateRecord(User user, String newName, String newPassword, User.Role role) {
-        try(Connection connection = DriverManager.getConnection(connectionUrl, DB_USER, DB_PASS);
+        try(Connection connection = DriverManager.getConnection(CONNECTION_URL, DB_USER, DB_PASS);
             PreparedStatement preparedStatement = connection.prepareStatement(sqlUpdateUser)) {
             preparedStatement.setString(1, newName);
             preparedStatement.setString(2, newPassword);

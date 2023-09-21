@@ -6,7 +6,7 @@ import javafx.beans.property.StringProperty;
 public class Question {
     private int id;
     private String question;
-    private String option1;
+    private String option1; //TODO: Make object Pair option-answer
     private String option2;
     private String option3;
     private String answer1;
