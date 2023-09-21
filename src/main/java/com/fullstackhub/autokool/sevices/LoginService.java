@@ -8,6 +8,7 @@ import com.fullstackhub.autokool.models.User;
 import java.io.IOException;
 import java.sql.*;
 
+import com.fullstackhub.autokool.utils.FXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -16,30 +17,33 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.fullstackhub.autokool.utils.Constants.DB_PASS;
-import static com.fullstackhub.autokool.utils.Constants.DB_USER;
+import static com.fullstackhub.autokool.utils.Constants.*;
 
 public class LoginService {
 
+    private final FXUtils fxUtils;
+
+    public LoginService(FXUtils fxUtils){
+        this.fxUtils = fxUtils;
+    }
+
     private static final Logger logger = LoggerFactory.getLogger(LoginService.class);
 
-    public static boolean logUserIn(ActionEvent actionEvent, User user) {
+    public boolean logUserIn(ActionEvent actionEvent, User user){
         String sqlSelectAllPersons = "SELECT * FROM users WHERE username = ?";
-        String connectionUrl = "jdbc:mysql://localhost:3306/autokool";
         String name = user.getName();
 
-        try (Connection connection = DriverManager.getConnection(connectionUrl, DB_USER, DB_PASS);
+        try (Connection connection = DriverManager.getConnection(CONNECTION_URL, DB_USER, DB_PASS);
              PreparedStatement preparedStatement = connection.prepareStatement(sqlSelectAllPersons)) {
 
             preparedStatement.setString(1, name);
 
             try (ResultSet resultSet = preparedStatement.executeQuery()){
                 if (resultSet.isBeforeFirst()){
-                    while (resultSet.next()){
+                    if (resultSet.next()){
                         int retrievedId = resultSet.getInt("id");
                         String retrievedUsername = resultSet.getString("username");
                         String retrievedPassword = resultSet.getString("password");
@@ -50,67 +54,24 @@ public class LoginService {
                             user.setId(retrievedId);
                             user.setRole((retrievedRole.equals("USER"))? User.Role.USER: User.Role.ADMIN);
                             try{
-                                switch(user.getRole()){
-                                    case USER -> {
-                                        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("user-view.fxml"));
-                                        Parent root = fxmlLoader.load();
-
-                                        UserController userController = fxmlLoader.getController();
-                                        userController.setUserData(user);
-
-                                        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-                                        stage.setTitle("Пользователь N" + retrievedId+ ": " + retrievedUsername);
-                                        stage.setScene(new Scene(root, 1000, 600));
-                                        stage.show();
-                                        stage.getScene().setFill(Color.TRANSPARENT);
-
-                                        stage.centerOnScreen();
-                                        stage.setResizable(false);
-                                    }
-                                    case ADMIN -> {
-                                        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("admin-view.fxml"));
-                                        Parent root = fxmlLoader.load();
-
-                                        AdminController adminController = fxmlLoader.getController();
-
-                                        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-                                        stage.setTitle("Autokool: Admin Dashboard");
-                                        stage.setScene(new Scene(root, 1000, 600));
-                                        stage.show();
-                                        stage.getScene().setFill(Color.TRANSPARENT);
-
-                                        stage.centerOnScreen();
-                                        stage.setResizable(false);
-                                    }
-                                }
-
-
+                                fxUtils.showScreen(actionEvent, user);
                             } catch (IOException e) {
-                                System.out.println(e.getMessage());
+                                logger.error("IOException FXMLLoader - {}" ,e.getMessage());
+                                return false;
                             }
-
-
                             return true;
                         } else {
-                            logger.info("Wrong password!");
-                            Alert alert = new Alert(Alert.AlertType.ERROR);
-                            alert.setContentText("Wrong password!");
-                            alert.show();
+                            fxUtils.showAlert("Wrong password!");
                         }
                     }
-
                 } else {
-                    logger.info("User is not found");
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setContentText("User not found!");
-                    alert.show();
-                    return false;
+                    fxUtils.showAlert("User not found!");
                 }
             }
-
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            logger.error("SQLException - {}", e.getMessage());
         }
         return false;
     }
+
 }

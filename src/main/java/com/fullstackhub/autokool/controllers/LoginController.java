@@ -2,6 +2,7 @@ package com.fullstackhub.autokool.controllers;
 
 import com.fullstackhub.autokool.models.User;
 import com.fullstackhub.autokool.sevices.LoginService;
+import com.fullstackhub.autokool.utils.FXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.*;
@@ -23,15 +24,18 @@ public class LoginController implements Initializable {
     @FXML
     private TextField textFieldUsername;
 
+    private LoginService loginService;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         buttonLogin.setVisible(false);
+        loginService = new LoginService(new FXUtils());
 
         buttonLogin.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 User user = new User(textFieldUsername.getText(),textFieldPassword.getText());
-                LoginService.logUserIn(actionEvent, user);
+                loginService.logUserIn(actionEvent, user);
             }
         });
 
