@@ -1,4 +1,4 @@
-# AutoKool Desktop version :oncoming_police_car: :oncoming_automobile:
+# AutoKool Desktop :oncoming_police_car: :oncoming_automobile:
 
 Introducing a comprehensive Driving Theory Test app, designed to help aspiring drivers master the knowledge and skills required to pass their theory exams with confidence. The app offers a user-friendly interface and a vast collection of practice questions, covering all essential topics such as road signs, traffic regulations, and safe driving practices.
 
