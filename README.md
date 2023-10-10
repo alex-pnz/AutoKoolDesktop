@@ -16,9 +16,14 @@ Key features of our Driving Theory Test app include:
 
 Prepare yourself thoroughly for your driving theory test with our user-friendly and feature-rich app. Download now and embark on your journey towards becoming a confident and knowledgeable driver.
 
+### Project Tech Stack:
+![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white&style=plastic) ![JavaFX](https://img.shields.io/badge/JavaFX-2ea44f?logo=openjdk&logoColor=white+) ![Maven](https://img.shields.io/badge/Maven-red?logo=Apache+Maven&logoColor=white) ![MySQL Badge](https://img.shields.io/badge/MySQL-4479A1?logo=mysql&logoColor=fff&style=flat&style=plastic)<br>
+### Tests:
+![JUnit](https://img.shields.io/badge/Junit5-25A162?style=for-the-badge&logo=junit5&logoColor=white&style=plastic) ![Mockito](https://img.shields.io/badge/Mockito-success?logo=MEGA) ![TestFx](https://img.shields.io/badge/TestFx-orange?logo=openjdk&logoColor=white) ![H2 Database](https://img.shields.io/badge/H2_Database-yellow?logo=Semantic+Web&logoColor=white)
+
 
 ### Notes
-The project is a Maven + JavaFx application. It requires a MySql database to be pre-installed.
+The project requires a MySql database to be pre-installed.
 
 ### Deploying to Production
 To create a production build, call mvnw clean package -Pproduction (Windows), or ./mvnw clean package -Pproduction (Mac & Linux). This will build a JAR file with all the dependencies and front-end resources, ready to be deployed. The file can be found in the target folder after the build completes.
